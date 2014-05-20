@@ -1,11 +1,9 @@
 class LSystem(object):
-    def __init__(self, alphabet, rules, initial, singlechars=False):
+    def __init__(self, rules, initial, singlechars=False):
         if singlechars:
-            alphabet = alphabet.split()
             rules = dict((key, rules[key].split()) for key in rules)
             initial = initial.split()
 
-        self.alphabet = alphabet
         self.rules = rules
         self.initial = initial
         self.singlechars = singlechars
