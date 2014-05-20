@@ -20,6 +20,14 @@ class LSystemTestCase(unittest.TestCase):
         self.assertEqual(lsys.generate(1), 'cab')
         self.assertEqual(lsys.generate(2), 'ccaba')
 
+    def test_required_init_args(self):
+        with self.assertRaises(Exception):
+            lsystem.LSystem()
+        with self.assertRaises(Exception):
+            lsystem.LSystem(initial='a')
+        with self.assertRaises(Exception):
+            lsystem.LSystem(rules={'a': 'a'})
+
 
 
 if __name__ == '__main__':
