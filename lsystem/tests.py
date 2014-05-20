@@ -14,6 +14,12 @@ class LSystemTestCase(unittest.TestCase):
         self.assertEqual(lsys.generate(1), 'ab')
         self.assertEqual(lsys.generate(2), 'aba')
 
+    def test_copies_consts(self):
+        lsys = lsystem.LSystem(alphabet='ab', rules={'a': 'cab', 'b': 'a'}, initial='a', singlechars=True)
+        self.assertEqual(lsys.generate(0), 'a')
+        self.assertEqual(lsys.generate(1), 'cab')
+        self.assertEqual(lsys.generate(2), 'ccaba')
+
 
 
 if __name__ == '__main__':
