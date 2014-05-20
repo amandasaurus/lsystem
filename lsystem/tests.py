@@ -43,15 +43,15 @@ class WeightedRowTestCase(unittest.TestCase):
 
 class RuleParsingTestCase(unittest.TestCase):
     def test_simple(self):
-        self.assertEqual(lsystem.convert_rules({'a': ['b']}, singlechars=False), {'a': ['b']})
-        self.assertEqual(lsystem.convert_rules({'a': ['b'], 'b': ['a', 'b']}, singlechars=False), {'a': ['b'], 'b': ['a', 'b']})
-        self.assertEqual(lsystem.convert_rules({'a': 'b'}, singlechars=True), {'a': ['b']})
-        self.assertEqual(lsystem.convert_rules({'a': 'b', 'b': 'ab'}, singlechars=True), {'a': ['b'], 'b': ['a', 'b']})
+        self.assertEqual(lsystem.convert_rules({'a': ['b']}, singlechars=False), {'a': [['b']]})
+        self.assertEqual(lsystem.convert_rules({'a': ['b'], 'b': ['a', 'b']}, singlechars=False), {'a': [['b']], 'b': [['a', 'b']]})
+        self.assertEqual(lsystem.convert_rules({'a': 'b'}, singlechars=True), {'a': [['b']]})
+        self.assertEqual(lsystem.convert_rules({'a': 'b', 'b': 'ab'}, singlechars=True), {'a': [['b']], 'b': [['a', 'b']]})
 
     def test_single_char_weighted(self):
-        self.assertEqual(lsystem.convert_rules({'a': ['b'], 'b': [(1, 'a'), (2, 'b')]}, singlechars=True), {'a': ['b'], 'b': ['a', 'b', 'b']})
-        self.assertEqual(lsystem.convert_rules({'a': 'b', 'b': [(1, 'a'), (2, 'b')]}, singlechars=True), {'a': ['b'], 'b': ['a', 'b', 'b']})
-        self.assertEqual(lsystem.convert_rules({'a': 'b', 'b': [(1, 'a'), (2, 'ab')]}, singlechars=True), {'a': ['b'], 'b': ['a', 'ab', 'ab']})
+        #self.assertEqual(lsystem.convert_rules({'a': ['b'], 'b': [(1, 'a'), (2, 'b')]}, singlechars=True), {'a': [['b']], 'b': [['a'], ['b'], ['b']]})
+        self.assertEqual(lsystem.convert_rules({'a': 'b', 'b': [(1, 'a'), (2, 'b')]}, singlechars=True), {'a': [['b']], 'b': [['a'], ['b'], ['b']]})
+        self.assertEqual(lsystem.convert_rules({'a': 'b', 'b': [(1, 'a'), (2, 'ab')]}, singlechars=True), {'a': [['b']], 'b': [['a'], ['a', 'b'], ['a', 'b']]})
 
     def test_nonsingle_weighted(self):
         self.assertEqual(lsystem.convert_rules({'a': ['ab'], 'ab': [(1, ['a', 'ab']), (2, ['a'])]}, singlechars=False), {'a': ['b'], 'b': ['a', 'b', 'b']})

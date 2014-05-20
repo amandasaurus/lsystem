@@ -3,25 +3,40 @@ import random
 def expand_weighted(weights):
     output = []
     for repeat, value in weights:
-        output.extend([value] * repeat)
+        output.extend([[value]] * repeat)
     return output
 
 
 def convert_rules(rules, singlechars):
     if singlechars:
         return convert_rules_singlechars(rules)
-    return rules
+    else:
+        return convert_rules_nonsinglechars(rules)
+
+def convert_rules_nonsinglechars(rules):
+    new_rules = {}
+    if isinstance(rules.values()[0][0], basestring):
+        new_rules = dict((key, [rules[key]]) for key in rules)
+    else:
+        # weighted dict
+        for key in rules:
+            if all(isinstance(value, basestring) for value in rules[key]):
+                new_rules[key] = [list(rules[key])]
+            else:
+                new_rules[key] = expand_weighted(rules[key])
+
+    return new_rules
 
 
 def convert_rules_singlechars(rules):
     new_rules = {}
     if all(isinstance(value, basestring) for value in rules.values()):
-        new_rules = dict((key, list(rules[key])) for key in rules)
+        new_rules = dict((key, [list(rules[key])]) for key in rules)
     else:
         # weighted dict
         for key in rules:
             if all(isinstance(value, basestring) for value in rules[key]):
-                new_rules[key] = list(rules[key])
+                new_rules[key] = [list(rules[key])]
             else:
                 new_rules[key] = expand_weighted(rules[key])
 
@@ -71,4 +86,5 @@ class LSystem(object):
         if self.singlechars:
             output = ''.join(output)
         return output
+
 
