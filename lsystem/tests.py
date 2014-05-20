@@ -28,7 +28,33 @@ class LSystemTestCase(unittest.TestCase):
         with self.assertRaises(Exception):
             lsystem.LSystem(rules={'a': 'a'})
 
+    def test_random(self):
+        lsys = lsystem.LSystem(initial='0', singlechars=True, rules={'0': [(1, '0'), (1, '1[0]0')], '1': '11'})
+        lsys.seed = 12
+        self.assertEqual(lsys.generate(0), '0')
+        self.assertEqual(lsys.generate(1), '0')
 
+
+class WeightedRowTestCase(unittest.TestCase):
+    def test_simple(self):
+        self.assertEqual(lsystem.expand_weighted([(1, 'a'), (1, 'b')]), ['a', 'b'])
+        self.assertEqual(lsystem.expand_weighted([(1, 'a'), (2, 'b')]), ['a', 'b', 'b'])
+
+
+class RuleParsingTestCase(unittest.TestCase):
+    def test_simple(self):
+        self.assertEqual(lsystem.convert_rules({'a': ['b']}, singlechars=False), {'a': ['b']})
+        self.assertEqual(lsystem.convert_rules({'a': ['b'], 'b': ['a', 'b']}, singlechars=False), {'a': ['b'], 'b': ['a', 'b']})
+        self.assertEqual(lsystem.convert_rules({'a': 'b'}, singlechars=True), {'a': ['b']})
+        self.assertEqual(lsystem.convert_rules({'a': 'b', 'b': 'ab'}, singlechars=True), {'a': ['b'], 'b': ['a', 'b']})
+
+    def test_single_char_weighted(self):
+        self.assertEqual(lsystem.convert_rules({'a': ['b'], 'b': [(1, 'a'), (2, 'b')]}, singlechars=True), {'a': ['b'], 'b': ['a', 'b', 'b']})
+        self.assertEqual(lsystem.convert_rules({'a': 'b', 'b': [(1, 'a'), (2, 'b')]}, singlechars=True), {'a': ['b'], 'b': ['a', 'b', 'b']})
+        self.assertEqual(lsystem.convert_rules({'a': 'b', 'b': [(1, 'a'), (2, 'ab')]}, singlechars=True), {'a': ['b'], 'b': ['a', 'ab', 'ab']})
+
+    def test_nonsingle_weighted(self):
+        self.assertEqual(lsystem.convert_rules({'a': ['ab'], 'ab': [(1, ['a', 'ab']), (2, ['a'])]}, singlechars=False), {'a': ['b'], 'b': ['a', 'b', 'b']})
 
 if __name__ == '__main__':
     unittest.main()
