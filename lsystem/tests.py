@@ -21,12 +21,9 @@ class LSystemTestCase(unittest.TestCase):
         self.assertEqual(lsys.generate(2), 'ccaba')
 
     def test_required_init_args(self):
-        with self.assertRaises(Exception):
-            lsystem.LSystem()
-        with self.assertRaises(Exception):
-            lsystem.LSystem(initial='a')
-        with self.assertRaises(Exception):
-            lsystem.LSystem(rules={'a': 'a'})
+        self.assertRaises(Exception, lsystem.LSystem)
+        self.assertRaises(Exception, lsystem.LSystem, None, {'initial':'a'})
+        self.assertRaises(Exception, lsystem.LSystem, None, {'rules': {'a': 'a'}})
 
     def test_random_seed(self):
         lsys = lsystem.LSystem(initial='0', singlechars=True, rules={'0': [(1, '0'), (1, '1[0]0')], '1': '11'})
