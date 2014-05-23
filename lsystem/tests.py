@@ -28,23 +28,21 @@ class LSystemTestCase(unittest.TestCase):
         with self.assertRaises(Exception):
             lsystem.LSystem(rules={'a': 'a'})
 
-    def test_random_seed_12(self):
+    def test_random_seed(self):
         lsys = lsystem.LSystem(initial='0', singlechars=True, rules={'0': [(1, '0'), (1, '1[0]0')], '1': '11'})
         lsys.seed = 12
-        self.assertEqual(lsys.generate(0), '0')
-        self.assertEqual(lsys.generate(1), '0')
-        self.assertEqual(lsys.generate(2), '1[0]0')
-        self.assertEqual(lsys.generate(3), '11[1[0]0]0')
-        self.assertEqual(lsys.generate(4), '1111[11[0]0]0')
-
-    def test_random_seed_30(self):
-        lsys = lsystem.LSystem(initial='0', singlechars=True, rules={'0': [(1, '0'), (1, '1[0]0')], '1': '11'})
+        results_12 = [lsys.generate(x) for x in [0, 1, 2, 3, 4]]
         lsys.seed = 30
-        self.assertEqual(lsys.generate(0), '0')
-        self.assertEqual(lsys.generate(1), '1[0]0')
-        self.assertEqual(lsys.generate(2), '11[0]0')
-        self.assertEqual(lsys.generate(3), '1111[1[0]0]0')
-        self.assertEqual(lsys.generate(4), '11111111[11[0]0]1[0]0')
+        results_30 = [lsys.generate(x) for x in [0, 1, 2, 3, 4]]
+        self.assertNotEqual(results_12, results_30)
+
+        lsys.seed = 12
+        self.assertEqual([lsys.generate(x) for x in [0, 1, 2, 3, 4]], results_12)
+        lsys.seed = 12
+        self.assertEqual([lsys.generate(x) for x in [0, 1, 2, 3, 4]], results_12)
+        lsys.seed = 30
+        self.assertEqual([lsys.generate(x) for x in [0, 1, 2, 3, 4]], results_30)
+
 
 
 class WeightedRowTestCase(unittest.TestCase):
