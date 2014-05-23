@@ -1,6 +1,7 @@
 import random
 import six
 
+
 def expand_weighted(weights):
     output = []
     for repeat, value in weights:
@@ -13,6 +14,7 @@ def convert_rules(rules, singlechars):
         return convert_rules_singlechars(rules)
     else:
         return convert_rules_nonsinglechars(rules)
+
 
 def convert_rules_nonsinglechars(rules):
     new_rules = {}
@@ -37,6 +39,7 @@ def convert_rules_singlechars(rules):
             new_rules[key] = expand_weighted(this_values)
 
     return new_rules
+
 
 class LSystem(object):
     def __init__(self, rules, initial, singlechars=False):
@@ -74,10 +77,6 @@ class LSystem(object):
                         output.extend(random.choice(this_replacement))
                         pass
 
-
-
         if self.singlechars:
             output = ''.join(output)
         return output
-
-
