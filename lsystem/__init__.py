@@ -40,17 +40,10 @@ def convert_rules_singlechars(rules):
 
 class LSystem(object):
     def __init__(self, rules, initial, singlechars=False):
-        if singlechars:
-            if all(isinstance(value, basestring) for value in rules.values()):
-                rules = dict((key, [rules[key].split()]) for key in rules)
-            else:
-                # weighted randoms
-                rules = dict((key, [x.split() for x in expand_weighted(rules[key])]) for key in rules)
-            initial = initial.split()
 
-        self.rules = rules
         self.initial = initial
         self.singlechars = singlechars
+        self.rules = convert_rules(rules, singlechars=singlechars)
         self.seed = None
 
     def generate(self, num_steps=1000):
@@ -71,10 +64,14 @@ class LSystem(object):
                     output.append(char)
                 else:
                     this_replacement = self.rules[char]
-                    if isinstance(this_replacement, list):
-                        output.extend(this_replacement)
+                    assert isinstance(this_replacement, list)
+                    if len(this_replacement) == 1:
+                        # deterministic, non-random rule, so just apply that
+                        # one
+                        output.extend(this_replacement[0])
                     else:
-                        # dict so get calculations
+                        # stochastic rule
+                        output.extend(random.choice(this_replacement))
                         pass
 
 
