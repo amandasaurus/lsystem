@@ -9,6 +9,9 @@ setup(name="lsystem",
       packages=['lsystem'],
       license = 'GPLv3+',
       test_suite='lsystem.tests',
+      install_requires = [
+          'six',
+      ],
       classifiers=[
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Programming Language :: Python',

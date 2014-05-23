@@ -1,4 +1,5 @@
 import random
+import six
 
 def expand_weighted(weights):
     output = []
@@ -17,7 +18,7 @@ def convert_rules_nonsinglechars(rules):
     new_rules = {}
     #import pudb; pudb.set_trace()
     for key in rules:
-        if all(isinstance(value, basestring) for value in rules[key]):
+        if all(isinstance(value, six.string_types) for value in rules[key]):
             # This rule is a non-weighted simple one
             new_rules[key] = [list(rules[key])]
         else:
@@ -30,7 +31,7 @@ def convert_rules_nonsinglechars(rules):
 def convert_rules_singlechars(rules):
     new_rules = {}
     for key in rules:
-        if all(isinstance(value, basestring) for value in rules[key]):
+        if all(isinstance(value, six.string_types) for value in rules[key]):
             new_rules[key] = [list(rules[key])]
         else:
             this_values = [(weight, list(char)) for weight, char in rules[key]]
