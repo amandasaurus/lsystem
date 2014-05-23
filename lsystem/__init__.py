@@ -16,7 +16,6 @@ def convert_rules(rules, singlechars):
 
 def convert_rules_nonsinglechars(rules):
     new_rules = {}
-    #import pudb; pudb.set_trace()
     for key in rules:
         if all(isinstance(value, six.string_types) for value in rules[key]):
             # This rule is a non-weighted simple one
