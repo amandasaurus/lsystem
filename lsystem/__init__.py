@@ -3,7 +3,7 @@ import random
 def expand_weighted(weights):
     output = []
     for repeat, value in weights:
-        output.extend([[value]] * repeat)
+        output.extend([value] * repeat)
     return output
 
 
@@ -15,30 +15,26 @@ def convert_rules(rules, singlechars):
 
 def convert_rules_nonsinglechars(rules):
     new_rules = {}
-    if isinstance(rules.values()[0][0], basestring):
-        new_rules = dict((key, [rules[key]]) for key in rules)
-    else:
-        # weighted dict
-        for key in rules:
-            if all(isinstance(value, basestring) for value in rules[key]):
-                new_rules[key] = [list(rules[key])]
-            else:
-                new_rules[key] = expand_weighted(rules[key])
+    #import pudb; pudb.set_trace()
+    for key in rules:
+        if all(isinstance(value, basestring) for value in rules[key]):
+            # This rule is a non-weighted simple one
+            new_rules[key] = [list(rules[key])]
+        else:
+            # This rule is a weighted rule
+            new_rules[key] = expand_weighted(rules[key])
 
     return new_rules
 
 
 def convert_rules_singlechars(rules):
     new_rules = {}
-    if all(isinstance(value, basestring) for value in rules.values()):
-        new_rules = dict((key, [list(rules[key])]) for key in rules)
-    else:
-        # weighted dict
-        for key in rules:
-            if all(isinstance(value, basestring) for value in rules[key]):
-                new_rules[key] = [list(rules[key])]
-            else:
-                new_rules[key] = expand_weighted(rules[key])
+    for key in rules:
+        if all(isinstance(value, basestring) for value in rules[key]):
+            new_rules[key] = [list(rules[key])]
+        else:
+            this_values = [(weight, list(char)) for weight, char in rules[key]]
+            new_rules[key] = expand_weighted(this_values)
 
     return new_rules
 

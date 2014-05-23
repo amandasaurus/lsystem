@@ -54,7 +54,7 @@ class RuleParsingTestCase(unittest.TestCase):
         self.assertEqual(lsystem.convert_rules({'a': 'b', 'b': [(1, 'a'), (2, 'ab')]}, singlechars=True), {'a': [['b']], 'b': [['a'], ['a', 'b'], ['a', 'b']]})
 
     def test_nonsingle_weighted(self):
-        self.assertEqual(lsystem.convert_rules({'a': ['ab'], 'ab': [(1, ['a', 'ab']), (2, ['a'])]}, singlechars=False), {'a': ['b'], 'b': ['a', 'b', 'b']})
+        self.assertEqual(lsystem.convert_rules({'a': ['ab'], 'ab': [(1, ['a', 'ab']), (2, ['a'])]}, singlechars=False), {'a': [['ab']], 'ab': [['a', 'ab'], ['a'], ['a']]})
 
 if __name__ == '__main__':
     unittest.main()
