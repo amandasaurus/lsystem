@@ -50,6 +50,9 @@ class LSystem(object):
         self.seed = None
 
     def generate(self, num_steps=1000):
+        if num_steps < 0:
+            raise TypeError
+
         random.seed(self.seed)
         output = []
         if num_steps == 0:

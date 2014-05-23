@@ -15,6 +15,10 @@ class LSystemTestCase(unittest.TestCase):
         self.assertEqual(lsys.generate(1), 'ab')
         self.assertEqual(lsys.generate(2), 'aba')
 
+    def test_non_neg_gen(self):
+        lsys = lsystem.LSystem(rules={'a': 'ab', 'b': 'a'}, initial='a', singlechars=True)
+        self.assertRaises(TypeError, lsys.generate, -1)
+
     def test_copies_consts(self):
         lsys = lsystem.LSystem(rules={'a': 'cab', 'b': 'a'}, initial='a', singlechars=True)
         self.assertEqual(lsys.generate(0), 'a')
